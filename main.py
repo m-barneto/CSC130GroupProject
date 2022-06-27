@@ -82,6 +82,8 @@ def play_sequence():
         # Animate the tile
         tiles[item].animate_fade(t, window)
 
+
+# Try block to catch closing the window unexpectedly
 try:
     while True:
         # Draw each tile
