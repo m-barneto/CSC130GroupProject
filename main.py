@@ -21,34 +21,34 @@ def draw_rect(x, y, size, col):
 
 def click(x, y):
     # Make sure valXX is referencing the global version
-    global valTL
-    global valTR
-    global valBL
-    global valBR
+    global value_top_left
+    global value_top_right
+    global value_bottom_left
+    global value_bottom_right
 
     # Animating check for future use, not sure if needed yet
     if not animating:
         # Check which corner the click was on, and set the value to .5, this will darken the color
         if x <= 0 and y <= 0:
-            valBL = 0.5
+            value_bottom_left = 0.5
             print("Bottom left")
         if x > 0 and y > 0:
-            valTR = 0.5
+            value_top_right = 0.5
             print("Top right")
         if x > 0 and y < 0:
-            valBR = 0.5
+            value_bottom_right = 0.5
             print("Bottom right")
         if x < 0 and y > 0:
-            valTL = 0.5
+            value_top_left = 0.5
             print("Top left")
 
 
 def draw_tiles():
     # Draw all the squares with their respective colors
-    draw_rect(0, 0, SQUARE_SIZE, (valBR, 0, 0))
-    draw_rect(-SQUARE_SIZE, 0, SQUARE_SIZE, (0, valBL, 0))
-    draw_rect(-SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE, (0, 0, valTL))
-    draw_rect(0, SQUARE_SIZE, SQUARE_SIZE, (valTR, valTR, 0))
+    draw_rect(0, 0, SQUARE_SIZE, (value_bottom_right, 0, 0))
+    draw_rect(-SQUARE_SIZE, 0, SQUARE_SIZE, (0, value_bottom_left, 0))
+    draw_rect(-SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE, (0, 0, value_top_left))
+    draw_rect(0, SQUARE_SIZE, SQUARE_SIZE, (value_top_right, value_top_right, 0))
 
 
 WIDTH = 500
@@ -73,21 +73,21 @@ t.hideturtle()
 # Color animation variables
 animating = False
 
-valTL = 1
-valTR = 1
-valBL = 1
-valBR = 1
+value_top_left = 1
+value_top_right = 1
+value_bottom_left = 1
+value_bottom_right = 1
 
 while True:
     # Go through each color and add opacity back to it (TODO, move to own method)
-    if valTL < 1:
-        valTL = min(valTL + .099, 1.0)
-    if valTR < 1:
-        valTR = min(valTR + .099, 1.0)
-    if valBL < 1:
-        valBL = min(valBL + .099, 1.0)
-    if valBR < 1:
-        valBR = min(valBR + .099, 1.0)
+    if value_top_left < 1:
+        value_top_left = min(value_top_left + .099, 1.0)
+    if value_top_right < 1:
+        value_top_right = min(value_top_right + .099, 1.0)
+    if value_bottom_left < 1:
+        value_bottom_left = min(value_bottom_left + .099, 1.0)
+    if value_bottom_right < 1:
+        value_bottom_right = min(value_bottom_right + .099, 1.0)
     # Draw the tiles
     draw_tiles()
     # Update the window (may be possible to uncouple this from our sleep down below)
