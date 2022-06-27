@@ -82,47 +82,49 @@ def play_sequence():
         # Animate the tile
         tiles[item].animate_fade(t, window)
 
+try:
+    while True:
+        # Draw each tile
+        for j in tiles:
+            j.draw(t)
+        # Render the draw calls to the window
+        window.update()
 
-while True:
-    # Draw each tile
-    for j in tiles:
-        j.draw(t)
-    # Render the draw calls to the window
-    window.update()
+        if state == "Playing Sequence":
+            # Sleep for a second before playing sequence
+            time.sleep(1)
+            # Play the sequence
+            play_sequence()
+            # Copy the sequence to a player_seq listqueue
+            player_seq = ListQueue(sequence.items)
+            # Add a new number to the sequence
+            sequence.add(random.randrange(0, 4))
+            # Change the state to player's turn
+            state = "Player Turn"
+        elif state == "Player Turn":
+            # Wait for input
+            while clicked_tile is None:
+                # this should wait until our click method is called, which will set clicked_tile to an integer
+                window.update()
 
-    if state == "Playing Sequence":
-        # Sleep for a second before playing sequence
-        time.sleep(1)
-        # Play the sequence
-        play_sequence()
-        # Copy the sequence to a player_seq listqueue
-        player_seq = ListQueue(sequence.items)
-        # Add a new number to the sequence
-        sequence.add(random.randrange(0, 4))
-        # Change the state to player's turn
-        state = "Player Turn"
-    elif state == "Player Turn":
-        # Wait for input
-        while clicked_tile is None:
-            # this should wait until our click method is called, which will set clicked_tile to an integer
-            window.update()
-
-        # If the player clicked on the a tile that isnt the next in the player_seq queue
-        if player_seq.peek() != clicked_tile:
-            # End the game
-            print(f"Player ended game with {score} points!")
-            break
-        # Change state to animating that way clicks during this time will be ignored
-        state = "Animating"
-        # Animate the tile at the top of the queue
-        tiles[player_seq.pop()].animate_fade(t, window)
-        # Switch state back to player's turn
-        state = "Player Turn"
-        # Reset clicked_tile variable
-        clicked_tile = None
-        # If the player has input all the tiles correctly
-        if player_seq.isEmpty():
-            # Set state to playing sequence
-            state = "Playing Sequence"
-            # Add 1 to score
-            score += 1
+            # If the player clicked on the a tile that isnt the next in the player_seq queue
+            if player_seq.peek() != clicked_tile:
+                # End the game
+                print(f"Player ended game with {score} points!")
+                break
+            # Change state to animating that way clicks during this time will be ignored
+            state = "Animating"
+            # Animate the tile at the top of the queue
+            tiles[player_seq.pop()].animate_fade(t, window)
+            # Switch state back to player's turn
+            state = "Player Turn"
+            # Reset clicked_tile variable
+            clicked_tile = None
+            # If the player has input all the tiles correctly
+            if player_seq.isEmpty():
+                # Set state to playing sequence
+                state = "Playing Sequence"
+                # Add 1 to score
+                score += 1
+except turtle.Terminator:
+    print("Player ended the game.")
