@@ -8,6 +8,8 @@ from tile import Tile
 from listqueue import ListQueue
 import sys
 
+
+
 def set_intro_turtles(turtle_name: str, message: str):
     """Function to set up multiple turtles as individual cards for game and team intro
     @params: name of the turtle to be created and the message it puts on the card
@@ -55,7 +57,7 @@ def set_tiles():
     It creates four tiles, each with a different name, and returns them in a list
     :return: A list of tiles.
     """
-    
+    SQUARE_SIZE = 500 / 2
     # Setup tiles
     tile_top_left = Tile(-SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE, "Top Left")
     tile_top_right = Tile(0, SQUARE_SIZE, SQUARE_SIZE, "Top Right")
@@ -69,6 +71,18 @@ def set_tiles():
         tile_bottom_right  # 3
     ]
     return tiles
+
+# global variables -> needed for the click method that doesn't take params other than the x,y coordinates from the click
+state = {'state': "Playing Sequence"}
+# States:
+# Playing Sequence
+# Player Turn
+# Animating
+clicked_tile = None
+
+# set the tiles for both the click method and the play game method
+tiles = set_tiles()
+
 
 def create_sequence():
     """
@@ -84,31 +98,24 @@ def create_sequence():
     return seq
 
 
-# global variables
 
-# Window setup
-WIDTH = 500
-HEIGHT = 500
-SQUARE_SIZE = WIDTH / 2
-window = Screen()
-window.title("Simon Says")
-window.setup(width=WIDTH, height=HEIGHT)
-# tracer(0) disables automatic screen updates (we'll be updating the screen ourselves)
-window.tracer(0)
+def set_window():
+    """
+    It creates a turtle screen, sets the title to "Simon Says", sets the width and height to 500, and
+    disables automatic screen updates.
+    :return: The window is being returned.
+    """
+    
+    # Window setup
+    WIDTH = 500
+    HEIGHT = 500
+    window = Screen()
+    window.title("Simon Says")
+    window.setup(width=WIDTH, height=HEIGHT)
+    # tracer(0) disables automatic screen updates (we'll be updating the screen ourselves)
+    window.tracer(0)
+    return window
 
-# set up states
-state = {'state': "Playing Sequence"}
-# States:
-# Playing Sequence
-# Player Turn
-# Animating
-
-# create the computer sequence and the player sequence
-sequence = ListQueue(create_sequence())
-player_seq = ListQueue(sequence.items)
-clicked_tile = None
-score = 0
-tiles = set_tiles()
 
 
 
@@ -151,7 +158,6 @@ def click(x, y):
     :param y: The y coordinate of the click
     :return: The index of the tile that was clicked
     """
-    
     # Only register clicks during the player's turn
     if state['state'] != "Player Turn":
         return
@@ -168,12 +174,8 @@ def click(x, y):
             # Break out of the for loop as the clicked tile has already been found
             break
 
-# global window variable
-# Bind the onclick event to our click method
-window.onclick(click)
 
-
-def play_sequence(t):
+def play_sequence(t,window,sequence):
     """
     It loops through the items in the sequence, plays a sound, and animates the tile
     
@@ -194,12 +196,15 @@ def play_game():
     at the top of the queue, switches state back to player's turn, resets clicked_tile variable, checks if the player has input all the tiles correctly, sets state to playing sequence, adds 1 to score,
     shows the score constantly on the top of the screen, shows the score in the middle of the screen for each round, and then sleeps for a second
     """
-    
+    window = set_window()
     t = set_main_turtle()
     score_t = set_score_turtle()   
+    score = 0
+    # create the computer sequence and the player sequence
+    sequence = ListQueue(create_sequence())
+    player_seq = ListQueue(sequence.items)
     # reset the global variable values
     global clicked_tile
-    global score
     # Try block to catch closing the window unexpectedly
     try:
         while True:
@@ -213,7 +218,7 @@ def play_game():
                 # Sleep for a second before playing sequence
                 time.sleep(1)
                 # Play the sequence
-                play_sequence(t)
+                play_sequence(t, window, sequence)
                 # Copy the sequence to a player_seq listqueue
                 player_seq = ListQueue(sequence.items)
                 # Add a new number to the sequence
@@ -221,6 +226,8 @@ def play_game():
                 # Change the state to player's turn
                 state.update({'state' : "Player Turn"})
             elif state['state'] == "Player Turn":
+                # Bind the onclick event to our click method
+                window.onclick(click)
                 # Wait for input
                 while clicked_tile is None:
                     # this should wait until our click method is called, which will set clicked_tile to an integer
