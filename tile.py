@@ -1,5 +1,6 @@
 import time
 import turtle
+import sys
 
 
 class Tile:
@@ -58,9 +59,13 @@ class Tile:
 
     def animate_fade(self, t, window):
         self.fade_value = 0.2
-        while self.fade_value < 1.0:
-            self.update_fade()
-            self.draw(t)
-            window.update()
-            time.sleep(1 / 60)
+        try: 
+            while self.fade_value < 1.0:
+                self.update_fade()
+                self.draw(t)
+                window.update()
+                time.sleep(1 / 60)
+        except:
+            print("Player ended the game.")
+            sys.exit(1)
 
