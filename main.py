@@ -85,11 +85,11 @@ def create_sequence():
 
 
 # global variables
-turtle.TurtleScreen._RUNNING=True
+
+# Window setup
 WIDTH = 500
 HEIGHT = 500
 SQUARE_SIZE = WIDTH / 2
-# Window setup
 window = Screen()
 window.title("Simon Says")
 window.setup(width=WIDTH, height=HEIGHT)
@@ -102,7 +102,6 @@ state = {'state': "Playing Sequence"}
 # Playing Sequence
 # Player Turn
 # Animating
-
 
 # create the computer sequence and the player sequence
 sequence = ListQueue(create_sequence())
