@@ -266,7 +266,7 @@ def play_game():
 
 
 def main():
-    # call_intro()
+    call_intro()
     play_game()
 
 
