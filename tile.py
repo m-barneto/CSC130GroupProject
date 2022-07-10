@@ -60,11 +60,12 @@ class Tile:
     def animate_fade(self, t, window):
         self.fade_value = 0.2
         try: 
-            while self.fade_value < 1.0:
-                self.update_fade()
-                self.draw(t)
-                window.update()
-                time.sleep(1 / 60)
+            if self.fade_value < 1.0:
+                for _ in range(2):
+                    self.update_fade()
+                    self.draw(t)
+                    window.update()
+                    time.sleep(1 / 15)
         except:
             print("Player ended the game.")
             sys.exit(1)
