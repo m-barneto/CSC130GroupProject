@@ -14,7 +14,8 @@ class Tile:
         self.fade_value = 1.0
 
     def update_fade(self):
-        self.fade_value = min(self.fade_value + .099, 1.0)
+        #                                 (1.0 - 0.2) / steps
+        self.fade_value = min(self.fade_value + (.8 / 2), 1.0)
 
     def get_color(self):
         if self.tile_pos_name == "Top Left":
@@ -57,16 +58,16 @@ class Tile:
         else:
             return False
 
-    def animate_fade(self, t, window):
+    def animate_fade(self, t, window, anim_duration):
         self.fade_value = 0.2
-        try: 
+        try:
             if self.fade_value < 1.0:
                 for _ in range(2):
                     self.update_fade()
                     self.draw(t)
                     window.update()
-                    time.sleep(1 / 15)
+                    time.sleep(anim_duration / 2)
+                self.fade_value = 1.0
         except:
             print("Player ended the game.")
             sys.exit(1)
-

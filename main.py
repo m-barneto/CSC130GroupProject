@@ -9,7 +9,6 @@ from listqueue import ListQueue
 import sys
 
 
-
 def set_intro_turtles(turtle_name: str, message: str):
     """Function to set up multiple turtles as individual cards for game and team intro
     @params: name of the turtle to be created and the message it puts on the card
@@ -19,30 +18,31 @@ def set_intro_turtles(turtle_name: str, message: str):
     turtle_name.color('red')
     style = ('Courier', 12, 'italic')
     turtle_name.write(message,
-                font=style, align='center')
-    turtle_name.speed(5) 
+                      font=style, align='center')
+    turtle_name.speed(5)
     turtle_name.penup()
     turtle_name.hideturtle()
     time.sleep(2)
     turtle_name.clear()
 
+
 def call_intro():
     """
     This function sets up the intro turtles and their messages.
     """
-    
+
     # set up and run the intro turtles dict:
-    turtle_msgs = { "intro_t1": "Come play Simon Says with us!",
-                "intro_t2": "Click on each tile in the same sequence",
-                "intro_t3": "Lets see how many rounds you go!",
-                "intro_t4": "Team:",
-                "intro_t5": "Matthew Barneto",
-                "intro_t6" : "Kristena Bridges",
-                "intro_t7" : "Jonathan Alvarado",
-                "intro_t8" : "Sowmya Aji",
-                "intro_t9" : "Have fun!"
-            }
-    
+    turtle_msgs = {"intro_t1": "Come play Simon Says with us!",
+                   "intro_t2": "Click on each tile in the same sequence",
+                   "intro_t3": "Lets see how many rounds you go!",
+                   "intro_t4": "Team:",
+                   "intro_t5": "Matthew Barneto",
+                   "intro_t6": "Kristena Bridges",
+                   "intro_t7": "Jonathan Alvarado",
+                   "intro_t8": "Sowmya Aji",
+                   "intro_t9": "Have fun!"
+                   }
+
     try:
         # loop through list and dict to generate series of intro cards
         for tur in turtle_msgs.keys():
@@ -50,8 +50,8 @@ def call_intro():
     except:
         print("Player ended the game.")
         sys.exit(1)
-        
-        
+
+
 def set_tiles():
     """
     It creates four tiles, each with a different name, and returns them in a list
@@ -72,6 +72,7 @@ def set_tiles():
     ]
     return tiles
 
+
 # global variables -> needed for the click method that doesn't take params other than the x,y coordinates from the click
 state = {'state': "Playing Sequence"}
 # States:
@@ -89,14 +90,13 @@ def create_sequence():
     The function create_sequence() creates a random sequence of 4 numbers between 0 and 3
     :return: A list of 4 random numbers between 0 and 3.
     """
-    
+
     # create a random sequence for the computer to play 
     seq = []
     for i in range(4):
-        num = random.randrange(0,4)
+        num = random.randrange(0, 4)
         seq.append(num)
     return seq
-
 
 
 def set_window():
@@ -105,7 +105,7 @@ def set_window():
     disables automatic screen updates.
     :return: The window is being returned.
     """
-    
+
     # Window setup
     WIDTH = 500
     HEIGHT = 500
@@ -117,29 +117,28 @@ def set_window():
     return window
 
 
-
-
 def set_score_turtle():
     """
     It creates a score turtle, sets its position, hides it, sets its color, and sets its width
     :return: The score_t turtle is being returned.
     """
-    
+
     # set up score turtle
     score_t = turtle.Turtle()
     score_t.penup()
-    score_t.setposition(0,0)
+    score_t.setposition(0, 0)
     score_t.hideturtle()
     score_t.color("red")
     score_t.width(10)
     return score_t
+
 
 def set_main_turtle():
     """
     It returns the main turtle object that is set up to draw instantly and is hidden.
     :return: The turtle object.
     """
-    
+
     # Setup the tiles turtle
     t = turtle.Turtle()
     # Make it draw instantly
@@ -148,6 +147,7 @@ def set_main_turtle():
     t.penup()
     t.hideturtle()
     return t
+
 
 def click(x, y):
     """
@@ -168,26 +168,28 @@ def click(x, y):
         # If the click lands on the tile
         if tiles[i].handle_click(x, y):
             # Play a sound
-            winsound.Beep((i * 100) + 1000, 250)
+            #   400 - 1600 frequency for 250ms
+            winsound.Beep((i * 200) + 400, 250)
             # Set clicked_tile to the index of the tile
             clicked_tile = i
             # Break out of the for loop as the clicked tile has already been found
             break
 
 
-def play_sequence(t,window,sequence):
+def play_sequence(t, window, sequence):
     """
     It loops through the items in the sequence, plays a sound, and animates the tile
     
     :param t: The time in seconds since the program started
     """
-    
+
     # Loop through the tiles in the sequence
     for item in sequence.items:
         # Make a sound
-        winsound.Beep((item * 100) + 1000, 250)
+        #   400 - 1000 frequency for 250ms
+        winsound.Beep((item * 200) + 400, 250)
         # Animate the tile
-        tiles[item].animate_fade(t, window)
+        tiles[item].animate_fade(t, window, 0.5)
 
 
 def play_game():
@@ -198,7 +200,7 @@ def play_game():
     """
     window = set_window()
     t = set_main_turtle()
-    score_t = set_score_turtle()   
+    score_t = set_score_turtle()
     score = 0
     # create the computer sequence and the player sequence
     sequence = ListQueue(create_sequence())
@@ -224,43 +226,43 @@ def play_game():
                 # Add a new number to the sequence
                 sequence.add(random.randrange(0, 4))
                 # Change the state to player's turn
-                state.update({'state' : "Player Turn"})
+                state.update({'state': "Player Turn"})
             elif state['state'] == "Player Turn":
                 # Bind the onclick event to our click method
                 window.onclick(click)
                 # Wait for input
                 while clicked_tile is None:
                     # this should wait until our click method is called, which will set clicked_tile to an integer
-                    window.update()  
-                # If the player clicked on the a tile that isnt the next in the player_seq queue
+                    window.update()
+                    # If the player clicked on the a tile that isnt the next in the player_seq queue
                 if player_seq.peek() != clicked_tile:
                     # End the game
                     print(f"Player ended game with {score} points!")
                     break
                 # Change state to animating that way clicks during this time will be ignored
-                
+
                 state.update({"state": "Animating"})
                 # Animate the tile at the top of the queue
-                tiles[player_seq.pop()].animate_fade(t, window)
+                tiles[player_seq.pop()].animate_fade(t, window, 0.1)
                 # Switch state back to player's turn
                 state.update({'state': "Player Turn"})
                 # Reset clicked_tile variable
                 clicked_tile = None
-                
+
                 # If the player has input all the tiles correctly
                 if player_seq.isEmpty():
                     # Set state to playing sequence
-                    state.update({'state' : "Playing Sequence"})
+                    state.update({'state': "Playing Sequence"})
                     # Add 1 to score
                     score += 1
                     # show the score constantly on the top of the screen
-                    window.title(f"Simon says: Player current score: { score }")
+                    window.title(f"Simon says: Player current score: {score}")
                     t.hideturtle()
                     # show the score in the middle of the screen for each round
-                    score_t.write(f"Score: { score }", font=('Arial', 15, 'bold'), align="center")
+                    score_t.write(f"Score: {score}", font=('Arial', 15, 'bold'), align="center")
                     time.sleep(1)
                     score_t.clear()
-                    
+
     except turtle.Terminator:
         print("Player ended the game.")
 
