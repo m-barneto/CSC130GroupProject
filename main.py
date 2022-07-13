@@ -9,7 +9,7 @@ from listqueue import ListQueue
 import sys
 
 
-def set_intro_turtles(turtle_name: str, message: str):
+def set_intro_turtles(message: str):
     """Function to set up multiple turtles as individual cards for game and team intro
     @params: name of the turtle to be created and the message it puts on the card
     @returns: None"""
@@ -31,15 +31,14 @@ def call_intro():
     """
 
     # set up and run the intro turtles dict:
-    turtle_msgs = {"intro_t1": "Come play Simon Says with us! \nClick on each tile in the same sequence \nLets see how many rounds you go!",
-            "intro_t4": "Team: \nMatthew Barneto,  Kristena Bridges, Jonathan Alvarado, Sowmya Aji",
-            "intro_t9": "Have fun!"
-            }
+    turtle_msgs = ["Come play Simon Says with us! \nClick on each tile in the same sequence \nLet's see how many rounds you go!", "Team: \nMatthew Barneto,  Kristena Bridges, Jonathan Alvarado, Sowmya Aji",
+             "Have fun!"]
+            
 
     try:
         # loop through list and dict to generate series of intro cards
-        for tur in turtle_msgs.keys():
-            set_intro_turtles(tur, turtle_msgs[tur])
+        for tur in turtle_msgs:
+            set_intro_turtles(tur)
     except:
         print("Player ended the game.")
         sys.exit(1)
