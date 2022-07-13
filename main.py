@@ -32,14 +32,13 @@ def call_intro() -> None:
     """
 
     # turtle messages
-    turtle_msgs = ["Come play Simon Says with us! \nClick on each tile in the same sequence \nLet's see how many rounds you go!", "Team: \nMatthew Barneto,  Kristena Bridges, Jonathan Alvarado, Sowmya Aji","Have fun!"]
-            
+    turtle_msgs = ["Come play Simon Says with us! \nClick on each tile in the same sequence \nLet's see how many rounds you go!", "Team: \nMatthew Barneto,  Kristena Bridges, Jonathan Alvarado, Sowmya Aji", "Have fun!"]
 
     try:
         # loop through list and generate series of intro cards
         for tur in turtle_msgs:
             set_intro_turtles(tur)
-    except Exception as _:
+    except (Exception,):
         print("Player ended the game.")
         sys.exit(1)
 
@@ -56,13 +55,13 @@ def set_tiles() -> List[Tile]:
     tile_bottom_left = Tile(-SQUARE_SIZE, 0, SQUARE_SIZE, "Bottom Left")
     tile_bottom_right = Tile(0, 0, SQUARE_SIZE, "Bottom Right")
 
-    tiles = [
+    play_tiles = [
         tile_top_left,  # 0
         tile_top_right,  # 1
         tile_bottom_left,  # 2
         tile_bottom_right  # 3
     ]
-    return tiles
+    return play_tiles
 
 
 # global variables -> needed for the click method that doesn't take params other than the x,y coordinates from the click
@@ -131,7 +130,7 @@ def set_main_turtle() -> turtle.Turtle:
     :return: The turtle object.
     """
 
-    # Setup the tiles turtle
+    # Set up the tiles turtle
     t = turtle.Turtle()
     # Make it draw instantly
     t.speed(0)
@@ -189,9 +188,9 @@ def play_sequence(t: turtle.Turtle, window: turtle.TurtleScreen, sequence: ListQ
 
 def play_game() -> None:
     """
-    The function runs the game: it sets up the main turtle and the score turtle, then it enters a while loop that draws the tiles, plays the sequence, copies the sequence to a player_seq listqueue, adds a new number to the sequence, changes the state to player's turn, waits for input, checks if the player clicked on the a tile that isnt the next in the player_seq queue, changes state to animating, animates the tile
+    The function runs the game: it sets up the main turtle and the score turtle, then it enters a while loop that draws the tiles, plays the sequence, copies the sequence to a player_seq listqueue, adds a new number to the sequence, changes the state to player's turn, waits for input, checks if the player clicked on the tile that isn't the next in the player_seq queue, changes state to animating, animates the tile
     at the top of the queue, switches state back to player's turn, resets clicked_tile variable, checks if the player has input all the tiles correctly, sets state to playing sequence, adds 1 to score,
-    shows the score constantly on the top of the screen, shows the score in the middle of the screen for each round, and then sleeps for a second
+    shows the score constantly at the top of the screen, shows the score in the middle of the screen for each round, and then sleeps for a second
     """
     global state
     window = set_window()
@@ -222,7 +221,7 @@ def play_game() -> None:
                 # Add a new number to the sequence
                 sequence.add(random.randrange(0, 4))
                 # Change the state to player's turn
-                state =  "Player Turn"
+                state = "Player Turn"
             elif state == "Player Turn":
                 # Bind the onclick event to our click method
                 window.onclick(click)
@@ -230,7 +229,7 @@ def play_game() -> None:
                 while clicked_tile is None:
                     # this should wait until our click method is called, which will set clicked_tile to an integer
                     window.update()
-                    # If the player clicked on the a tile that isnt the next in the player_seq queue
+                    # If the player clicked on the tile that isn't the next in the player_seq queue
                 if player_seq.peek() != clicked_tile:
                     # End the game
                     print(f"Player ended game with {score} points!")
@@ -251,7 +250,7 @@ def play_game() -> None:
                     state = "Playing Sequence"
                     # Add 1 to score
                     score += 1
-                    # show the score constantly on the top of the screen
+                    # show the score constantly at the top of the screen
                     window.title(f"Simon says: Player current score: {score}")
                     t.hideturtle()
                     # show the score in the middle of the screen for each round
@@ -260,7 +259,8 @@ def play_game() -> None:
                     score_t.clear()
 
     except turtle.Terminator:
-        print("Player ended the game.")
+        # if player ends the game early return they ended game along with the points they made.
+        print(f"Player ended game early with {score} points!")
 
 
 def main():
