@@ -30,13 +30,13 @@ def call_intro():
     This function sets up the intro turtles and their messages.
     """
 
-    # set up and run the intro turtles dict:
+    # turtle messages
     turtle_msgs = ["Come play Simon Says with us! \nClick on each tile in the same sequence \nLet's see how many rounds you go!", "Team: \nMatthew Barneto,  Kristena Bridges, Jonathan Alvarado, Sowmya Aji",
              "Have fun!"]
             
 
     try:
-        # loop through list and dict to generate series of intro cards
+        # loop through list and generate series of intro cards
         for tur in turtle_msgs:
             set_intro_turtles(tur)
     except:
