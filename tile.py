@@ -5,7 +5,7 @@ import sys
 
 class Tile:
 
-    def __init__(self, x, y, size, tile_pos_name):
+    def __init__(self, x: float, y: float, size: float, tile_pos_name: str):
         self.x = x
         self.y = y
         self.size = size
@@ -26,9 +26,8 @@ class Tile:
             return (0, self.fade_value, 0)
         elif self.tile_pos_name == "Bottom Right":
             return (self.fade_value, 0, 0)
-        pass
 
-    def draw(self, t):
+    def draw(self, t: turtle.Turtle):
         t.goto(self.x, self.y)
         # set the fillcolor
         color = self.get_color()
@@ -45,7 +44,7 @@ class Tile:
         # ending the filling of the color
         t.end_fill()
 
-    def handle_click(self, mouse_x, mouse_y):
+    def handle_click(self, mouse_x: float, mouse_y: float):
         """
         if (    mouse_x > self.x and
                 mouse_y < self.y and
@@ -58,7 +57,7 @@ class Tile:
         else:
             return False
 
-    def animate_fade(self, t, window, anim_duration):
+    def animate_fade(self, t: turtle.Turtle, window: turtle.TurtleScreen, anim_duration: float):
         self.fade_value = 0.2
         try:
             if self.fade_value < 1.0:

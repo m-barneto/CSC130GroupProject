@@ -141,7 +141,7 @@ def set_main_turtle():
     return t
 
 
-def click(x, y):
+def click(x: float, y: float):
     """
     If the player clicks on a tile, play a sound and set the clicked_tile variable to the index of the
     tile
@@ -150,6 +150,7 @@ def click(x, y):
     :param y: The y coordinate of the click
     :return: The index of the tile that was clicked
     """
+
     # Only register clicks during the player's turn
     if state != "Player Turn":
         return
@@ -168,11 +169,13 @@ def click(x, y):
             break
 
 
-def play_sequence(t, window, sequence):
+def play_sequence(t: turtle.Turtle, window: turtle.TurtleScreen, sequence: ListQueue):
     """
     It loops through the items in the sequence, plays a sound, and animates the tile
-    
+
     :param t: The time in seconds since the program started
+    :param window: The window to draw to
+    :param sequence: The tile sequence to play
     """
 
     # Loop through the tiles in the sequence
