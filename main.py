@@ -7,9 +7,10 @@ import winsound
 from tile import Tile
 from listqueue import ListQueue
 import sys
+from typing import List
 
 
-def set_intro_turtles(message: str):
+def set_intro_turtles(message: str) -> None:
     """Function to set up multiple turtles as individual cards for game and team intro
     @params: name of the turtle to be created and the message it puts on the card
     @returns: None"""
@@ -25,26 +26,25 @@ def set_intro_turtles(message: str):
     turtle_name.clear()
 
 
-def call_intro():
+def call_intro() -> None:
     """
     This function sets up the intro turtles and their messages.
     """
 
     # turtle messages
-    turtle_msgs = ["Come play Simon Says with us! \nClick on each tile in the same sequence \nLet's see how many rounds you go!", "Team: \nMatthew Barneto,  Kristena Bridges, Jonathan Alvarado, Sowmya Aji",
-             "Have fun!"]
+    turtle_msgs = ["Come play Simon Says with us! \nClick on each tile in the same sequence \nLet's see how many rounds you go!", "Team: \nMatthew Barneto,  Kristena Bridges, Jonathan Alvarado, Sowmya Aji","Have fun!"]
             
 
     try:
         # loop through list and generate series of intro cards
         for tur in turtle_msgs:
             set_intro_turtles(tur)
-    except:
+    except Exception as e:
         print("Player ended the game.")
         sys.exit(1)
 
 
-def set_tiles():
+def set_tiles() -> List[Tile]:
     """
     It creates four tiles, each with a different name, and returns them in a list
     :return: A list of tiles.
@@ -77,7 +77,7 @@ clicked_tile = None
 tiles = set_tiles()
 
 
-def create_sequence():
+def create_sequence() -> List[int]:
     """
     The function create_sequence() creates a random sequence of 4 numbers between 0 and 3
     :return: A list of 4 random numbers between 0 and 3.
@@ -91,7 +91,7 @@ def create_sequence():
     return seq
 
 
-def set_window():
+def set_window() -> turtle.TurtleScreen:
     """
     It creates a turtle screen, sets the title to "Simon Says", sets the width and height to 500, and
     disables automatic screen updates.
@@ -109,7 +109,7 @@ def set_window():
     return window
 
 
-def set_score_turtle():
+def set_score_turtle() -> turtle.Turtle:
     """
     It creates a score turtle, sets its position, hides it, sets its color, and sets its width
     :return: The score_t turtle is being returned.
@@ -125,7 +125,7 @@ def set_score_turtle():
     return score_t
 
 
-def set_main_turtle():
+def set_main_turtle() -> turtle.Turtle:
     """
     It returns the main turtle object that is set up to draw instantly and is hidden.
     :return: The turtle object.
@@ -141,7 +141,7 @@ def set_main_turtle():
     return t
 
 
-def click(x: float, y: float):
+def click(x: float, y: float) -> None:
     """
     If the player clicks on a tile, play a sound and set the clicked_tile variable to the index of the
     tile
@@ -169,7 +169,7 @@ def click(x: float, y: float):
             break
 
 
-def play_sequence(t: turtle.Turtle, window: turtle.TurtleScreen, sequence: ListQueue):
+def play_sequence(t: turtle.Turtle, window: turtle.TurtleScreen, sequence: ListQueue) -> None:
     """
     It loops through the items in the sequence, plays a sound, and animates the tile
 
@@ -187,7 +187,7 @@ def play_sequence(t: turtle.Turtle, window: turtle.TurtleScreen, sequence: ListQ
         tiles[item].animate_fade(t, window, 0.5)
 
 
-def play_game():
+def play_game() -> None:
     """
     The function runs the game: it sets up the main turtle and the score turtle, then it enters a while loop that draws the tiles, plays the sequence, copies the sequence to a player_seq listqueue, adds a new number to the sequence, changes the state to player's turn, waits for input, checks if the player clicked on the a tile that isnt the next in the player_seq queue, changes state to animating, animates the tile
     at the top of the queue, switches state back to player's turn, resets clicked_tile variable, checks if the player has input all the tiles correctly, sets state to playing sequence, adds 1 to score,

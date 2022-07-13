@@ -13,11 +13,11 @@ class Tile:
 
         self.fade_value = 1.0
 
-    def update_fade(self):
+    def update_fade(self) -> None:
         #                                 (1.0 - 0.2) / steps
         self.fade_value = min(self.fade_value + (.8 / 2), 1.0)
 
-    def get_color(self):
+    def get_color(self) -> tuple:
         if self.tile_pos_name == "Top Left":
             return (0, 0, self.fade_value)
         elif self.tile_pos_name == "Top Right":
@@ -27,7 +27,7 @@ class Tile:
         elif self.tile_pos_name == "Bottom Right":
             return (self.fade_value, 0, 0)
 
-    def draw(self, t: turtle.Turtle):
+    def draw(self, t: turtle.Turtle) -> None:
         t.goto(self.x, self.y)
         # set the fillcolor
         color = self.get_color()
@@ -44,7 +44,7 @@ class Tile:
         # ending the filling of the color
         t.end_fill()
 
-    def handle_click(self, mouse_x: float, mouse_y: float):
+    def handle_click(self, mouse_x: float, mouse_y: float) -> bool:
         """
         if (    mouse_x > self.x and
                 mouse_y < self.y and
@@ -57,7 +57,7 @@ class Tile:
         else:
             return False
 
-    def animate_fade(self, t: turtle.Turtle, window: turtle.TurtleScreen, anim_duration: float):
+    def animate_fade(self, t: turtle.Turtle, window: turtle.TurtleScreen, anim_duration: float) -> None:
         self.fade_value = 0.2
         try:
             if self.fade_value < 1.0:
@@ -67,6 +67,6 @@ class Tile:
                     window.update()
                     time.sleep(anim_duration / 2)
                 self.fade_value = 1.0
-        except:
+        except Exception as e:
             print("Player ended the game.")
             sys.exit(1)
