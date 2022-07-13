@@ -17,12 +17,11 @@ def set_intro_turtles(turtle_name: str, message: str):
     turtle_name = turtle.Turtle()
     turtle_name.color('red')
     style = ('Courier', 12, 'italic')
-    turtle_name.write(message,
-                      font=style, align='center')
+    turtle_name.write(message, font=style, align='center')
     turtle_name.speed(5)
     turtle_name.penup()
     turtle_name.hideturtle()
-    time.sleep(2)
+    time.sleep(4)
     turtle_name.clear()
 
 
@@ -32,16 +31,10 @@ def call_intro():
     """
 
     # set up and run the intro turtles dict:
-    turtle_msgs = {"intro_t1": "Come play Simon Says with us!",
-                   "intro_t2": "Click on each tile in the same sequence",
-                   "intro_t3": "Lets see how many rounds you go!",
-                   "intro_t4": "Team:",
-                   "intro_t5": "Matthew Barneto",
-                   "intro_t6": "Kristena Bridges",
-                   "intro_t7": "Jonathan Alvarado",
-                   "intro_t8": "Sowmya Aji",
-                   "intro_t9": "Have fun!"
-                   }
+    turtle_msgs = {"intro_t1": "Come play Simon Says with us! \nClick on each tile in the same sequence \nLets see how many rounds you go!",
+            "intro_t4": "Team: \nMatthew Barneto,  Kristena Bridges, Jonathan Alvarado, Sowmya Aji",
+            "intro_t9": "Have fun!"
+            }
 
     try:
         # loop through list and dict to generate series of intro cards
@@ -74,7 +67,7 @@ def set_tiles():
 
 
 # global variables -> needed for the click method that doesn't take params other than the x,y coordinates from the click
-state = {'state': "Playing Sequence"}
+state = "Playing Sequence"
 # States:
 # Playing Sequence
 # Player Turn
@@ -93,7 +86,7 @@ def create_sequence():
 
     # create a random sequence for the computer to play 
     seq = []
-    for i in range(4):
+    for _ in range(4):
         num = random.randrange(0, 4)
         seq.append(num)
     return seq
@@ -159,7 +152,7 @@ def click(x, y):
     :return: The index of the tile that was clicked
     """
     # Only register clicks during the player's turn
-    if state['state'] != "Player Turn":
+    if state != "Player Turn":
         return
 
     global clicked_tile
@@ -198,6 +191,7 @@ def play_game():
     at the top of the queue, switches state back to player's turn, resets clicked_tile variable, checks if the player has input all the tiles correctly, sets state to playing sequence, adds 1 to score,
     shows the score constantly on the top of the screen, shows the score in the middle of the screen for each round, and then sleeps for a second
     """
+    global state
     window = set_window()
     t = set_main_turtle()
     score_t = set_score_turtle()
@@ -216,7 +210,7 @@ def play_game():
             # Render the draw calls to the window
             window.update()
 
-            if state['state'] == "Playing Sequence":
+            if state == "Playing Sequence":
                 # Sleep for a second before playing sequence
                 time.sleep(1)
                 # Play the sequence
@@ -226,8 +220,8 @@ def play_game():
                 # Add a new number to the sequence
                 sequence.add(random.randrange(0, 4))
                 # Change the state to player's turn
-                state.update({'state': "Player Turn"})
-            elif state['state'] == "Player Turn":
+                state =  "Player Turn"
+            elif state == "Player Turn":
                 # Bind the onclick event to our click method
                 window.onclick(click)
                 # Wait for input
@@ -241,18 +235,18 @@ def play_game():
                     break
                 # Change state to animating that way clicks during this time will be ignored
 
-                state.update({"state": "Animating"})
+                state = "Animating"
                 # Animate the tile at the top of the queue
                 tiles[player_seq.pop()].animate_fade(t, window, 0.1)
                 # Switch state back to player's turn
-                state.update({'state': "Player Turn"})
+                state = "Player Turn"
                 # Reset clicked_tile variable
                 clicked_tile = None
 
                 # If the player has input all the tiles correctly
                 if player_seq.isEmpty():
                     # Set state to playing sequence
-                    state.update({'state': "Playing Sequence"})
+                    state = "Playing Sequence"
                     # Add 1 to score
                     score += 1
                     # show the score constantly on the top of the screen
