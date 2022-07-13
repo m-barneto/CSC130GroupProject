@@ -67,6 +67,6 @@ class Tile:
                     window.update()
                     time.sleep(anim_duration / 2)
                 self.fade_value = 1.0
-        except Exception as e:
+        except Exception as _:
             print("Player ended the game.")
             sys.exit(1)

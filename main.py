@@ -39,7 +39,7 @@ def call_intro() -> None:
         # loop through list and generate series of intro cards
         for tur in turtle_msgs:
             set_intro_turtles(tur)
-    except Exception as e:
+    except Exception as _:
         print("Player ended the game.")
         sys.exit(1)
 
