@@ -1,14 +1,14 @@
 """
 File: listqueue.py
-Author: Man-Chi Leung
+Author: Matthew B, Sowmya A, Jonathan A, Kristena B
 """
 
 
 class ListQueue(object):
-    """An list-based stack implementation."""
+    """A list-based stack implementation."""
 
     # Constructor
-    def __init__(self, sourceCollection = None):
+    def __init__(self, sourceCollection=None):
         """Sets the initial state of self, which includes the
         contents of sourceCollection, if it's present."""
         self.items = []
@@ -78,7 +78,7 @@ class ListQueue(object):
         """Removes and returns the item at the front of the queue.
         Precondition: the queue is not empty.
         Raises IndexError if queue is not empty.
-        Postcondition: the front item is removed from the queue."""
+        Post condition: the front item is removed from the queue."""
         if self.isEmpty():
             raise IndexError
         return self.items.pop(0)

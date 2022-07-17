@@ -19,13 +19,13 @@ class Tile:
 
     def get_color(self) -> tuple:
         if self.tile_pos_name == "Top Left":
-            return (0, 0, self.fade_value)
+            return 0, 0, self.fade_value
         elif self.tile_pos_name == "Top Right":
-            return (self.fade_value, self.fade_value, 0)
+            return self.fade_value, self.fade_value, 0
         elif self.tile_pos_name == "Bottom Left":
-            return (0, self.fade_value, 0)
+            return 0, self.fade_value, 0
         elif self.tile_pos_name == "Bottom Right":
-            return (self.fade_value, 0, 0)
+            return self.fade_value, 0, 0
 
     def draw(self, t: turtle.Turtle) -> None:
         t.goto(self.x, self.y)
@@ -67,6 +67,6 @@ class Tile:
                     window.update()
                     time.sleep(anim_duration / 2)
                 self.fade_value = 1.0
-        except Exception as _:
+        except (Exception,):
             print("Player ended the game.")
             sys.exit(1)
